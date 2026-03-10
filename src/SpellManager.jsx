@@ -167,30 +167,7 @@ function FormField({ label, value, onChange, type="text", placeholder="" }) {
 /* ── Spell Form Modal ── */
 function SpellFormModal({ spell, onSave, onClose, isEdit }) {
   const [f, setF] = useState({...spell});
-  const [imgLoading, setImgLoading] = useState(false);
-  const [imgError, setImgError] = useState("");
   const u = (k,v) => setF(p=>({...p,[k]:v}));
-
-  const generateImage = async () => {
-    if (!f.name) { setImgError("Bitte zuerst einen Namen eingeben."); return; }
-    setImgLoading(true);
-    setImgError("");
-    const prompt = `Dark fantasy D&D spell art, ${f.name} spell (${f.school}), ${f.shortDesc || f.name}, magical atmosphere, dramatic lighting, spell card illustration style, dark background, highly detailed, cinematic`;
-    try {
-      const res = await fetch("/.netlify/functions/generate-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Unbekannter Fehler");
-      u("imageUrl", data.imageData);
-    } catch (err) {
-      setImgError("Fehler: " + err.message);
-    } finally {
-      setImgLoading(false);
-    }
-  };
 
   return (
     <div style={{ position:"fixed", inset:0, zIndex:50, display:"flex", alignItems:"center", justifyContent:"center", padding:16 }} onClick={onClose}>
@@ -230,28 +207,7 @@ function SpellFormModal({ spell, onSave, onClose, isEdit }) {
             <FormField label="Würfel-Notiz" value={f.diceNote} onChange={v=>u("diceNote",v)}/>
           </div>
 
-          {/* ── Bild-Sektion ── */}
-          <div>
-            <label style={{ display:"block", fontSize:12, color:"#9ca3af", marginBottom:4 }}>Zauberbild</label>
-            {f.imageUrl && (
-              <div style={{ width:"100%", height:120, borderRadius:10, marginBottom:8, overflow:"hidden", background:"rgba(17,24,39,0.6)" }}>
-                <img src={f.imageUrl} alt={f.name} style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={()=>u("imageUrl","")}/>
-              </div>
-            )}
-            <div style={{ display:"flex", gap:8 }}>
-              <input type="text" value={f.imageUrl} placeholder="https://... oder per KI generieren →" onChange={e=>u("imageUrl",e.target.value)}
-                style={{ flex:1, padding:"10px 12px", borderRadius:8, fontSize:13, background:"rgba(17,24,39,0.6)", border:"1px solid rgba(75,85,99,0.5)", color:"#f3f4f6", outline:"none", fontFamily:"inherit" }}
-                onFocus={e=>e.target.style.borderColor="rgba(251,191,36,0.5)"}
-                onBlur={e=>e.target.style.borderColor="rgba(75,85,99,0.5)"}
-              />
-              <button onClick={generateImage} disabled={imgLoading}
-                style={{ padding:"10px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:imgLoading?"not-allowed":"pointer", whiteSpace:"nowrap", background:imgLoading?"rgba(31,41,55,0.4)":"linear-gradient(135deg,rgba(168,85,247,0.25),rgba(124,58,237,0.15))", border:"1px solid rgba(168,85,247,0.4)", color:imgLoading?"#6b7280":"#c084fc", display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
-                <SparkleIcon size={14} color={imgLoading?"#6b7280":"#c084fc"}/>
-                {imgLoading ? "Generiere…" : "KI-Bild"}
-              </button>
-            </div>
-            {imgError && <p style={{ marginTop:6, fontSize:12, color:"#f87171" }}>{imgError}</p>}
-          </div>
+          <FormField label="Bild-URL" value={f.imageUrl} onChange={v=>u("imageUrl",v)} placeholder="https://..."/>
         </div>
         <div style={{ display:"flex", gap:12, marginTop:20 }}>
           <button onClick={onClose} style={{ flex:1, padding:12, borderRadius:12, fontWeight:600, cursor:"pointer", background:"rgba(31,41,55,0.4)", border:"1px solid rgba(75,85,99,0.3)", color:"#9ca3af" }}>Abbrechen</button>
