@@ -118,6 +118,7 @@ const DEFAULT_SPELLS = [
   /* ── Eid-Zauber (Schwur der Vergeltung) – immer vorbereitet ── */
   { id:"9", name:"Fluch", school:"Verzauberung", level:1, shortDesc:"Bis zu 3 Gegner ziehen 1W4 von Angriffs- und Rettungswürfen ab.", fullDesc:"Du belegst bis zu 3 Kreaturen in Reichweite, die du sehen kannst. Jedes Ziel muss einen CHA-Rettungswurf gegen deinen Zauber-SC bestehen. Bei Misslingen zieht das Ziel bei jedem Angriffswurf und Rettungswurf 1W4 ab, solange der Zauber wirkt. Eid-Zauber (Schwur der Vergeltung) – immer vorbereitet.", range:"9 m", duration:"Konzentration, bis zu 1 Minute", components:"V, S, M (Bluttropfen)", concentration:true, diceFormula:"1W4", diceNote:"Malus auf Angriff & Rettung (Gegner)", imageUrl:"/images/spells/fluch.png", theme:"radial-gradient(ellipse at 40% 60%, rgba(220,38,38,0.25) 0%, transparent 50%), radial-gradient(circle at 60% 30%, rgba(127,29,29,0.2) 0%, transparent 40%), radial-gradient(circle at 50% 80%, rgba(248,113,113,0.1) 0%, transparent 30%), linear-gradient(160deg, #1a0505 0%, #0f0808 50%, #1a0a0a 100%)" },
   { id:"10", name:"Mal des Jägers", school:"Erkennungsmagie", level:1, shortDesc:"Markiere ein Ziel – Bonusschaden bei jedem Treffer.", fullDesc:"Bonusaktion: Du markierst eine Kreatur in Reichweite, die du sehen kannst. Bei jedem Waffentreffer gegen das Ziel verursachst du zusätzlich 1W6 Schaden des Waffentyps. Wenn das Ziel auf 0 HP fällt, kannst du das Mal als Bonusaktion auf ein neues Ziel verschieben (kein neuer Slot nötig). Eid-Zauber (Schwur der Vergeltung) – immer vorbereitet.", range:"27 m", duration:"Konzentration, bis zu 1 Stunde", components:"V", concentration:true, diceFormula:"1W6", diceNote:"Bonusschaden pro Waffentreffer", imageUrl:"/images/spells/mal-des-jaegers.png", theme:"radial-gradient(circle at 70% 40%, rgba(234,88,12,0.3) 0%, transparent 45%), radial-gradient(ellipse at 30% 60%, rgba(251,146,60,0.15) 0%, transparent 50%), radial-gradient(circle at 50% 20%, rgba(249,115,22,0.1) 0%, transparent 35%), linear-gradient(145deg, #1a0f05 0%, #0f0a05 50%, #1a1005 100%)" },
+  { id:"11", name:"Befehl", school:"Verzauberung", level:1, shortDesc:"Ein Wort zwingt eine Kreatur zu gehorchen.", fullDesc:"Du sprichst ein Wort als Befehl zu einer Kreatur, die du in Reichweite sehen kannst. Das Ziel muss einen WIS-Rettungswurf bestehen oder in seinem nächsten Zug deinen Befehl ausführen. Der Zauber hat keine Wirkung auf Untote, auf Ziele, die deine Sprache nicht verstehen, oder wenn dein Befehl ihnen direkt schaden würde. Typische Befehle: Nähere dich, Lass fallen, Fliehe, Kriech, Halt. Auf höheren Stufen: +1 Ziel pro Zauberplatz-Stufe über der 1 (Ziele max. 9 m auseinander).", range:"18 m", duration:"1 Runde", components:"V", concentration:false, diceFormula:"", diceNote:"WIS-Rettungswurf gegen SC", imageUrl:"/images/spells/befehl.png", theme:"radial-gradient(ellipse at 50% 40%, rgba(239,68,68,0.25) 0%, transparent 50%), radial-gradient(circle at 30% 70%, rgba(185,28,28,0.15) 0%, transparent 40%), radial-gradient(circle at 70% 50%, rgba(220,38,38,0.1) 0%, transparent 35%), linear-gradient(155deg, #1a0a0a 0%, #120808 50%, #1a0f0a 100%)" },
 ];
 
 function evaluateDice(formula, stats) {
@@ -267,7 +268,7 @@ function SpecialEditModal({ special, onSave, onClose }) {
 
 /* ══════════════════ MAIN APP ══════════════════ */
 export default function SpellManager() {
-  const [stats, setStats] = useState({ str:14, dex:10, con:12, int:8, wis:10, cha:16, proficiencyBonus:2, spellAttackBonus:5, spellSaveDC:13, charismaModifier:3 });
+  const [stats, setStats] = useState({ str:16, dex:10, con:14, int:8, wis:12, cha:18, proficiencyBonus:3, spellAttackBonus:7, spellSaveDC:15, charismaModifier:4 });
   const [statsOpen, setStatsOpen] = useState(false);
   const [spells, setSpells] = useState(DEFAULT_SPELLS);
   const [selectedSpell, setSelectedSpell] = useState(null);
@@ -276,23 +277,24 @@ export default function SpellManager() {
   const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true] });
   const [warlockSlots, setWarlockSlots] = useState([true]);
   const [specials, setSpecials] = useState([
-    { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe.", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
-    { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen. +Proficiency auf Schaden, Crits auf 19–20, bei Tod 4 HP zurück.", maxSlots:1, slots:[true], restType:"short", color:"red" },
-    { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"HP-Pool = Paladin-Stufe × 5. Berührung: HP heilen oder Krankheit/Gift heilen (5 Punkte).", maxSlots:5, slots:[true,true,true,true,true], restType:"long", color:"green" },
-    { id:"s4", name:"Göttlicher Kanal", subtitle:"Schwur d. Vergeltung", desc:"Schwur der Feindschaft: Bonusaktion, Vorteil auf Angriffe gegen 1 Ziel (1 Min). — Feind bannen: Aktion, 1 Ziel verängstigt & Bewegung 0 (WIS-Rettung).", maxSlots:1, slots:[true], restType:"short", color:"amber" },
+    { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
+    { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen (30 ft, sichtbar, 1 Min). Gegen das Ziel: +3 Schaden (Übungsbonus), Crits auf 19–20. Stirbt das Ziel: 5 HP zurück (Hexer-Stufe 1 + CHA-Mod +4).", maxSlots:1, slots:[true], restType:"short", color:"red" },
+    { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5. Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:20, poolCurrent:20, slots:[], restType:"long", color:"green" },
+    { id:"s4", name:"Göttlicher Kanal", subtitle:"Schwur d. Vergeltung", desc:"Schwur der Feindschaft: Bonusaktion, Vorteil auf Angriffe gegen 1 Ziel (1 Min). — Feind bannen: Aktion, 1 Ziel verängstigt & Bewegung 0 (WIS-Rettung).", maxSlots:2, slots:[true,true], restType:"short", color:"amber" },
   ]);
   const [editingSpecial, setEditingSpecial] = useState(null);
   const [filterLevel, setFilterLevel] = useState("all");
   const [expandedSpecial, setExpandedSpecial] = useState(null);
-  const [hp, setHp] = useState(47);
-  const [maxHp, setMaxHp] = useState(47);
+  const [hp, setHp] = useState(61);
+  const [maxHp, setMaxHp] = useState(61);
 
   const togglePSlot = (lv, i) => setPaladinSlots(p => { const k="level"+lv, a=[...p[k]]; a[i]=!a[i]; return {...p,[k]:a}; });
   const toggleWSlot = i => setWarlockSlots(p => { const a=[...p]; a[i]=!a[i]; return a; });
   const toggleSSlot = (sid,i) => setSpecials(p => p.map(s => s.id!==sid?s:{...s,slots:s.slots.map((v,j)=>j===i?!v:v)}));
+  const setPoolValue = (sid,v) => setSpecials(p => p.map(s => s.id!==sid?s:{...s,poolCurrent:Math.max(0,Math.min(s.maxSlots,v))}));
 
-  const shortRest = () => { setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>s.restType==="short"?{...s,slots:s.slots.map(()=>true)}:s)); };
-  const longRest = () => { setPaladinSlots({level1:[true,true,true]}); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true)}))); };
+  const shortRest = () => { setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>s.restType==="short"?{...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}:s)); };
+  const longRest = () => { setPaladinSlots({level1:[true,true,true]}); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}))); };
 
   const saveSpell = sp => {
     if (sp.id && spells.find(s=>s.id===sp.id)) setSpells(p=>p.map(s=>s.id===sp.id?sp:s));
@@ -300,7 +302,7 @@ export default function SpellManager() {
     setShowSpellForm(false); setEditingSpell(null);
   };
   const deleteSpell = id => { setSpells(p=>p.filter(s=>s.id!==id)); setSelectedSpell(null); };
-  const saveSpecial = sp => { setSpecials(p=>p.map(s=>s.id!==sp.id?s:{...sp,slots:Array(sp.maxSlots).fill(true)})); setEditingSpecial(null); };
+  const saveSpecial = sp => { setSpecials(p=>p.map(s=>s.id!==sp.id?s:{...sp,slots:sp.pool?[]:Array(sp.maxSlots).fill(true),poolCurrent:sp.pool?Math.min(sp.poolCurrent??sp.maxSlots,sp.maxSlots):(sp.poolCurrent||0)})); setEditingSpecial(null); };
 
   const filtered = filterLevel==="all" ? spells : spells.filter(s=>s.level===parseInt(filterLevel));
   const empty = { id:"", name:"", school:"Hervorrufung", level:0, shortDesc:"", fullDesc:"", range:"", duration:"", components:"", concentration:false, diceFormula:"", diceNote:"", imageUrl:"", theme:"" };
@@ -331,7 +333,7 @@ export default function SpellManager() {
             <h1 style={{ fontSize:30, fontWeight:800, letterSpacing:4, background:"linear-gradient(135deg,#fbbf24,#f59e0b 40%,#d97706)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>GRIMOIRE</h1>
             <SparkleIcon size={26} color="#fbbf24"/>
           </div>
-          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>Hexer 1 · Paladin 3 — Zauber-Manager</p>
+          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>Hexer 1 · Paladin 4 — Zauber-Manager</p>
         </header>
 
         {/* ═══ STATS ═══ */}
@@ -437,7 +439,19 @@ export default function SpellManager() {
                         </button>
                       </div>
                       <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-                        {sp.slots.map((a,i)=><SlotGem key={i} active={a} onClick={()=>toggleSSlot(sp.id,i)} size={40} color={sp.color}/>)}
+                        {sp.pool ? (
+                          <div style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 10px", borderRadius:10, background:`rgba(52,211,153,0.07)`, border:`1px solid ${accent}55` }}>
+                            <button onClick={()=>setPoolValue(sp.id,(sp.poolCurrent||0)-1)} style={{ width:28, height:28, borderRadius:6, border:`1px solid ${accent}55`, background:`${accent}1a`, color:accent, fontSize:16, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", lineHeight:1 }}>−</button>
+                            <div style={{ display:"flex", alignItems:"baseline", gap:3 }}>
+                              <input type="number" value={sp.poolCurrent??0} onChange={e=>setPoolValue(sp.id,parseInt(e.target.value)||0)}
+                                style={{ width:56, fontSize:20, fontWeight:800, color: (sp.poolCurrent||0)<=Math.floor(sp.maxSlots*0.25)?"#f87171":(sp.poolCurrent||0)<=Math.floor(sp.maxSlots*0.5)?"#fbbf24":accent, background:"transparent", border:"none", textAlign:"center", outline:"none", MozAppearance:"textfield", padding:0 }}/>
+                              <span style={{ fontSize:12, color:"#6b7280" }}>/ {sp.maxSlots}</span>
+                            </div>
+                            <button onClick={()=>setPoolValue(sp.id,(sp.poolCurrent||0)+1)} style={{ width:28, height:28, borderRadius:6, border:`1px solid ${accent}55`, background:`${accent}1a`, color:accent, fontSize:16, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", lineHeight:1 }}>+</button>
+                          </div>
+                        ) : (
+                          sp.slots.map((a,i)=><SlotGem key={i} active={a} onClick={()=>toggleSSlot(sp.id,i)} size={40} color={sp.color}/>)
+                        )}
                       </div>
                       <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:10, padding:"2px 7px", borderRadius:10, background:sp.restType==="short"?"rgba(120,53,15,0.3)":"rgba(30,58,138,0.3)", color:sp.restType==="short"?"#fcd34d":"#93c5fd", marginLeft:4 }}>
                         {sp.restType==="short"?<CoffeeIcon size={9}/>:<MoonIcon size={9}/>}

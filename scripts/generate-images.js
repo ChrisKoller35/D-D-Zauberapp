@@ -70,6 +70,11 @@ const SPELLS = [
     filename: 'mal-des-jaegers.png',
     prompt: 'Dark fantasy D&D spell art, hunter\'s mark spell, orange glowing magical hunting sigil rune appearing on a target creature, predator tracking magic mark, ranger spell visualization, fiery orange targeting glyph, wilderness hunting magic, spell card illustration style, dark forest background',
   },
+  {
+    id: '11',
+    filename: 'befehl.png',
+    prompt: 'Dark fantasy D&D spell art, command spell effect close-up, swirling crimson red sound wave rings expanding through dark air, glowing arcane compulsion runes floating in mid-air, glyphs of domination suspended in shadows, menacing red magical aura, enchantment magic visualization, no text, no card frame, no borders, no letters, pure atmospheric magical effect, painterly digital art, cinematic dramatic lighting, very dark background',
+  },
 ];
 
 async function generateImage(spell) {
