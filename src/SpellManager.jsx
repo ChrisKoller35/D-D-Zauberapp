@@ -119,6 +119,9 @@ const DEFAULT_SPELLS = [
   { id:"9", name:"Fluch", school:"Verzauberung", level:1, shortDesc:"Bis zu 3 Gegner ziehen 1W4 von Angriffs- und Rettungswürfen ab.", fullDesc:"Du belegst bis zu 3 Kreaturen in Reichweite, die du sehen kannst. Jedes Ziel muss einen CHA-Rettungswurf gegen deinen Zauber-SC bestehen. Bei Misslingen zieht das Ziel bei jedem Angriffswurf und Rettungswurf 1W4 ab, solange der Zauber wirkt. Eid-Zauber (Schwur der Vergeltung) – immer vorbereitet.", range:"9 m", duration:"Konzentration, bis zu 1 Minute", components:"V, S, M (Bluttropfen)", concentration:true, diceFormula:"1W4", diceNote:"Malus auf Angriff & Rettung (Gegner)", imageUrl:"/images/spells/fluch.png", theme:"radial-gradient(ellipse at 40% 60%, rgba(220,38,38,0.25) 0%, transparent 50%), radial-gradient(circle at 60% 30%, rgba(127,29,29,0.2) 0%, transparent 40%), radial-gradient(circle at 50% 80%, rgba(248,113,113,0.1) 0%, transparent 30%), linear-gradient(160deg, #1a0505 0%, #0f0808 50%, #1a0a0a 100%)" },
   { id:"10", name:"Mal des Jägers", school:"Erkennungsmagie", level:1, shortDesc:"Markiere ein Ziel – Bonusschaden bei jedem Treffer.", fullDesc:"Bonusaktion: Du markierst eine Kreatur in Reichweite, die du sehen kannst. Bei jedem Waffentreffer gegen das Ziel verursachst du zusätzlich 1W6 Schaden des Waffentyps. Wenn das Ziel auf 0 HP fällt, kannst du das Mal als Bonusaktion auf ein neues Ziel verschieben (kein neuer Slot nötig). Eid-Zauber (Schwur der Vergeltung) – immer vorbereitet.", range:"27 m", duration:"Konzentration, bis zu 1 Stunde", components:"V", concentration:true, diceFormula:"1W6", diceNote:"Bonusschaden pro Waffentreffer", imageUrl:"/images/spells/mal-des-jaegers.png", theme:"radial-gradient(circle at 70% 40%, rgba(234,88,12,0.3) 0%, transparent 45%), radial-gradient(ellipse at 30% 60%, rgba(251,146,60,0.15) 0%, transparent 50%), radial-gradient(circle at 50% 20%, rgba(249,115,22,0.1) 0%, transparent 35%), linear-gradient(145deg, #1a0f05 0%, #0f0a05 50%, #1a1005 100%)" },
   { id:"11", name:"Befehl", school:"Verzauberung", level:1, shortDesc:"Ein Wort zwingt eine Kreatur zu gehorchen.", fullDesc:"Du sprichst ein Wort als Befehl zu einer Kreatur, die du in Reichweite sehen kannst. Das Ziel muss einen WIS-Rettungswurf bestehen oder in seinem nächsten Zug deinen Befehl ausführen. Der Zauber hat keine Wirkung auf Untote, auf Ziele, die deine Sprache nicht verstehen, oder wenn dein Befehl ihnen direkt schaden würde. Typische Befehle: Nähere dich, Lass fallen, Fliehe, Kriech, Halt. Auf höheren Stufen: +1 Ziel pro Zauberplatz-Stufe über der 1 (Ziele max. 9 m auseinander).", range:"18 m", duration:"1 Runde", components:"V", concentration:false, diceFormula:"", diceNote:"WIS-Rettungswurf gegen SC", imageUrl:"/images/spells/befehl.png", theme:"radial-gradient(ellipse at 50% 40%, rgba(239,68,68,0.25) 0%, transparent 50%), radial-gradient(circle at 30% 70%, rgba(185,28,28,0.15) 0%, transparent 40%), radial-gradient(circle at 70% 50%, rgba(220,38,38,0.1) 0%, transparent 35%), linear-gradient(155deg, #1a0a0a 0%, #120808 50%, #1a0f0a 100%)" },
+  /* ── Level 2 ── */
+  { id:"12", name:"Hilfe", school:"Bannmagie", level:2, shortDesc:"Bis zu 3 Verbündete erhalten +5 max. & aktuelle HP für 8 Stunden.", fullDesc:"Wähle bis zu drei Kreaturen in Reichweite. Für die Dauer erhöht sich der Trefferpunkte-Maximalwert und die aktuellen Trefferpunkte jedes Ziels um 5. Auf höheren Stufen: Der Bonus erhöht sich um weitere 5 TP pro Zauberplatz-Stufe über der 2. (Grad 3 = +10 TP, Grad 4 = +15 TP, …).", range:"9 m", duration:"8 Stunden", components:"V, S, M (weißer Stoffstreifen)", concentration:false, diceFormula:"", diceNote:"+5 max. & aktuelle HP (Slot 2), +5/höheren Slot", imageUrl:"/images/spells/aid.png", theme:"radial-gradient(ellipse at 50% 50%, rgba(253,224,71,0.3) 0%, transparent 55%), radial-gradient(circle at 30% 30%, rgba(251,191,36,0.2) 0%, transparent 45%), radial-gradient(circle at 70% 70%, rgba(245,158,11,0.15) 0%, transparent 40%), linear-gradient(155deg, #1a1505 0%, #0f0d05 50%, #1a1208 100%)" },
+  { id:"13", name:"Streitross beschwören", school:"Beschwörung", level:2, shortDesc:"Beschwöre ein überirdisches Reittier (Himmlisch, Fee oder Niederhöllisch).", fullDesc:"Du beschwörst ein überirdisches Wesen als loyales Reittier in einem freien Feld in Reichweite (Statblock: Otherworldly Steed, Größe Groß). Wähle bei jedem Wirken den Kreaturentyp – Himmlisch, Fee oder Niederhöllisch – und das Aussehen (Pferd, Kamel, Schattenwolf, Elch …). Im Kampf teilt das Reittier deine Initiative; bist du kampfunfähig, handelt es selbständig zu deinem Schutz. Es verschwindet bei 0 TP oder wenn du stirbst. Magische Heilung, die DU erhältst, heilt auch das Reittier. Stets vorbereitet auf Paladin-Stufe 5. 1× pro langer Rast ohne Zauberplatz wirkbar (siehe 'Streitross beschw. (frei)').", range:"9 m", duration:"Augenblicklich (Reittier bleibt bis entlassen / 0 TP / Tod / erneutes Wirken)", components:"V, S", concentration:false, diceFormula:"", diceNote:"Beschwörung — Otherworldly Steed", imageUrl:"/images/spells/find-steed.png", theme:"radial-gradient(ellipse at 50% 60%, rgba(251,191,36,0.3) 0%, transparent 55%), radial-gradient(circle at 30% 40%, rgba(217,119,6,0.2) 0%, transparent 45%), radial-gradient(circle at 70% 50%, rgba(253,224,71,0.15) 0%, transparent 40%), linear-gradient(165deg, #1a1505 0%, #120d08 50%, #1f1408 100%)" },
 ];
 
 function evaluateDice(formula, stats) {
@@ -274,19 +277,22 @@ export default function SpellManager() {
   const [selectedSpell, setSelectedSpell] = useState(null);
   const [editingSpell, setEditingSpell] = useState(null);
   const [showSpellForm, setShowSpellForm] = useState(false);
-  const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true] });
+  const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true,true], level2:[true,true] });
   const [warlockSlots, setWarlockSlots] = useState([true]);
   const [specials, setSpecials] = useState([
     { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
     { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen (30 ft, sichtbar, 1 Min). Gegen das Ziel: +3 Schaden (Übungsbonus), Crits auf 19–20. Stirbt das Ziel: 5 HP zurück (Hexer-Stufe 1 + CHA-Mod +4).", maxSlots:1, slots:[true], restType:"short", color:"red" },
-    { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5. Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:20, poolCurrent:20, slots:[], restType:"long", color:"green" },
+    { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5. Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:25, poolCurrent:25, slots:[], restType:"long", color:"green" },
     { id:"s4", name:"Göttlicher Kanal", subtitle:"Schwur d. Vergeltung", desc:"Schwur der Feindschaft: Bonusaktion, Vorteil auf Angriffe gegen 1 Ziel (1 Min). — Feind bannen: Aktion, 1 Ziel verängstigt & Bewegung 0 (WIS-Rettung).", maxSlots:2, slots:[true,true], restType:"short", color:"amber" },
+    { id:"s5", name:"Streitross beschw. (frei)", subtitle:"Paladin Lvl 5 — Treuer Streitross", desc:"Du hast den Zauber 'Streitross beschwören' stets vorbereitet. Du kannst ihn 1× pro langer Rast wirken, OHNE einen Zauberplatz zu verbrauchen. Weitere Wirkungen kosten einen 2.-Grad-Zauberplatz.", maxSlots:1, slots:[true], restType:"long", color:"green" },
+    { id:"m1", name:"Sap — Langschwert", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Langschwert, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
+    { id:"m2", name:"Sap — Speer", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Speer, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
   ]);
   const [editingSpecial, setEditingSpecial] = useState(null);
   const [filterLevel, setFilterLevel] = useState("all");
   const [expandedSpecial, setExpandedSpecial] = useState(null);
-  const [hp, setHp] = useState(61);
-  const [maxHp, setMaxHp] = useState(61);
+  const [hp, setHp] = useState(69);
+  const [maxHp, setMaxHp] = useState(69);
 
   const togglePSlot = (lv, i) => setPaladinSlots(p => { const k="level"+lv, a=[...p[k]]; a[i]=!a[i]; return {...p,[k]:a}; });
   const toggleWSlot = i => setWarlockSlots(p => { const a=[...p]; a[i]=!a[i]; return a; });
@@ -294,7 +300,7 @@ export default function SpellManager() {
   const setPoolValue = (sid,v) => setSpecials(p => p.map(s => s.id!==sid?s:{...s,poolCurrent:Math.max(0,Math.min(s.maxSlots,v))}));
 
   const shortRest = () => { setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>s.restType==="short"?{...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}:s)); };
-  const longRest = () => { setPaladinSlots({level1:[true,true,true]}); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}))); };
+  const longRest = () => { setPaladinSlots({level1:[true,true,true,true],level2:[true,true]}); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}))); };
 
   const saveSpell = sp => {
     if (sp.id && spells.find(s=>s.id===sp.id)) setSpells(p=>p.map(s=>s.id===sp.id?sp:s));
@@ -333,7 +339,7 @@ export default function SpellManager() {
             <h1 style={{ fontSize:30, fontWeight:800, letterSpacing:4, background:"linear-gradient(135deg,#fbbf24,#f59e0b 40%,#d97706)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>GRIMOIRE</h1>
             <SparkleIcon size={26} color="#fbbf24"/>
           </div>
-          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>Hexer 1 · Paladin 4 — Zauber-Manager</p>
+          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>Hexer 1 · Paladin 5 — Zauber-Manager</p>
         </header>
 
         {/* ═══ STATS ═══ */}
@@ -387,6 +393,7 @@ export default function SpellManager() {
               <div style={{ display:"flex", gap:16, alignItems:"center" }}>
                 <div style={{ flex:1, display:"flex", flexDirection:"column", gap:14 }}>
                   {[{label:"Paladin Level 1",slots:paladinSlots.level1,toggle:(i)=>togglePSlot(1,i),color:"amber"},
+                    {label:"Paladin Level 2",slots:paladinSlots.level2,toggle:(i)=>togglePSlot(2,i),color:"amber"},
                     {label:"Hexer Pact L1",slots:warlockSlots,toggle:toggleWSlot,color:"purple",note:"(kurze Rast)"}
                   ].map(({label,slots,toggle,color,note})=>(
                     <div key={label} style={{ display:"flex", alignItems:"center", gap:16, flexWrap:"wrap" }}>
@@ -439,7 +446,9 @@ export default function SpellManager() {
                         </button>
                       </div>
                       <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-                        {sp.pool ? (
+                        {sp.infoOnly ? (
+                          <span style={{ fontSize:11, padding:"4px 10px", borderRadius:10, background:"rgba(34,211,238,0.08)", border:"1px solid rgba(34,211,238,0.25)", color:"#67e8f9", fontWeight:600, letterSpacing:1, textTransform:"uppercase" }}>Passiv</span>
+                        ) : sp.pool ? (
                           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 10px", borderRadius:10, background:`rgba(52,211,153,0.07)`, border:`1px solid ${accent}55` }}>
                             <button onClick={()=>setPoolValue(sp.id,(sp.poolCurrent||0)-1)} style={{ width:28, height:28, borderRadius:6, border:`1px solid ${accent}55`, background:`${accent}1a`, color:accent, fontSize:16, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", lineHeight:1 }}>−</button>
                             <div style={{ display:"flex", alignItems:"baseline", gap:3 }}>
@@ -453,10 +462,10 @@ export default function SpellManager() {
                           sp.slots.map((a,i)=><SlotGem key={i} active={a} onClick={()=>toggleSSlot(sp.id,i)} size={40} color={sp.color}/>)
                         )}
                       </div>
-                      <span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:10, padding:"2px 7px", borderRadius:10, background:sp.restType==="short"?"rgba(120,53,15,0.3)":"rgba(30,58,138,0.3)", color:sp.restType==="short"?"#fcd34d":"#93c5fd", marginLeft:4 }}>
+                      {!sp.infoOnly && (<span style={{ display:"inline-flex", alignItems:"center", gap:4, fontSize:10, padding:"2px 7px", borderRadius:10, background:sp.restType==="short"?"rgba(120,53,15,0.3)":"rgba(30,58,138,0.3)", color:sp.restType==="short"?"#fcd34d":"#93c5fd", marginLeft:4 }}>
                         {sp.restType==="short"?<CoffeeIcon size={9}/>:<MoonIcon size={9}/>}
                         {sp.restType==="short"?" Kurz":" Lang"}
-                      </span>
+                      </span>)}
                     </div>
                     {/* Expandable description */}
                     {isOpen && sp.desc && (
