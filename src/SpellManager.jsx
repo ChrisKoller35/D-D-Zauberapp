@@ -291,8 +291,8 @@ export default function SpellManager() {
   const [editingSpecial, setEditingSpecial] = useState(null);
   const [filterLevel, setFilterLevel] = useState("all");
   const [expandedSpecial, setExpandedSpecial] = useState(null);
-  const [hp, setHp] = useState(69);
-  const [maxHp, setMaxHp] = useState(69);
+  const [hp, setHp] = useState(73);
+  const [maxHp, setMaxHp] = useState(73);
 
   const togglePSlot = (lv, i) => setPaladinSlots(p => { const k="level"+lv, a=[...p[k]]; a[i]=!a[i]; return {...p,[k]:a}; });
   const toggleWSlot = i => setWarlockSlots(p => { const a=[...p]; a[i]=!a[i]; return a; });
