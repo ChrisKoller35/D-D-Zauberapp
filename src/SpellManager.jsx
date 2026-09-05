@@ -136,6 +136,21 @@ function evaluateDice(formula, stats) {
   return r;
 }
 
+/* ── Göttliche Niederstreckung (Smite) – Waffe + Smite + Optionen kombinieren ── */
+function computeSmite(spell, stats, opts) {
+  const cha = stats.charismaModifier || 0;
+  const weaponDice = 1;          // Langschwert 1W8
+  const weaponFlat = 1 + cha;    // +1 Waffe & +CHA (Hexblade)
+  const m = /([0-9]+)\s*[Ww]8/.exec(spell.diceFormula || "");
+  const baseDice = m ? parseInt(m[1]) : 0;
+  const smiteDice = baseDice + ((opts.rank || 1) - 1);   // +1W8 pro höherem Rang
+  const preciseDice = opts.precise ? 1 : 0;   // Präziser Schlag +1W8
+  const undeadDice = opts.undead ? 1 : 0;     // Untot/Unhold +1W8
+  const totalD8 = weaponDice + smiteDice + preciseDice + undeadDice;
+  const formula = `${totalD8}W8${weaponFlat ? ` + ${weaponFlat}` : ""}`;
+  return { formula, weaponDice, weaponFlat, smiteDice, preciseDice, undeadDice, totalD8 };
+}
+
 /* ── Gem ── */
 function SlotGem({ active, onClick, size = 48, color = "amber" }) {
   const C = { amber:{g:"#fbbf24,#d97706",gl:"rgba(251,191,36,0.5)"}, purple:{g:"#c084fc,#7c3aed",gl:"rgba(168,85,247,0.5)"}, cyan:{g:"#67e8f9,#0891b2",gl:"rgba(34,211,238,0.5)"}, red:{g:"#fda4af,#e11d48",gl:"rgba(251,113,133,0.5)"}, green:{g:"#6ee7b7,#059669",gl:"rgba(52,211,153,0.5)"} };
@@ -275,6 +290,7 @@ export default function SpellManager() {
   const [statsOpen, setStatsOpen] = useState(false);
   const [spells, setSpells] = useState(DEFAULT_SPELLS);
   const [selectedSpell, setSelectedSpell] = useState(null);
+  const [smiteOptions, setSmiteOptions] = useState({ precise:false, undead:false, rank:1 });
   const [editingSpell, setEditingSpell] = useState(null);
   const [showSpellForm, setShowSpellForm] = useState(false);
   const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true,true], level2:[true,true] });
@@ -508,7 +524,7 @@ export default function SpellManager() {
               const lc = sp.level===0?"107,114,128":sp.level===1?"251,191,36":"168,85,247";
               const dv = evaluateDice(sp.diceFormula, stats);
               return (
-                <button key={sp.id} onClick={()=>setSelectedSpell(sp)} className="chov"
+                <button key={sp.id} onClick={()=>{setSmiteOptions({precise:false,undead:false,rank:1});setSelectedSpell(sp);}} className="chov"
                   style={{ textAlign:"left", borderRadius:16, overflow:"hidden", cursor:"pointer", background:"rgba(15,15,30,0.5)", border:"1px solid rgba(251,191,36,0.08)", padding:0, color:"inherit" }}>
                   <div style={{ height:120, width:"100%", display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden", background:sp.imageUrl?`url(${sp.imageUrl}) center/cover`:sp.theme||`linear-gradient(135deg, rgba(${lc},0.15), rgba(10,10,18,0.8))` }}>
                     {!sp.imageUrl && !sp.theme && <SparkleIcon size={36} color="rgba(107,114,128,0.3)"/>}
@@ -577,6 +593,59 @@ export default function SpellManager() {
                 <p style={{ fontSize:13, color:"#9ca3af" }}>{selectedSpell.diceNote}</p>
               </div>
             );})()}
+
+            {selectedSpell.name && selectedSpell.name.includes("Niederstreck") && (()=>{
+              const s = computeSmite(selectedSpell, stats, smiteOptions);
+              const Row = ({label, value, dim}) => (
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"4px 0", opacity: dim?0.5:1 }}>
+                  <span style={{ fontSize:13, color:"#cbd5e1" }}>{label}</span>
+                  <span style={{ fontSize:13, fontWeight:700, color:"#fcd34d" }}>{value}</span>
+                </div>
+              );
+              const Check = ({on, onClick, label, hint}) => (
+                <button onClick={onClick} style={{ display:"flex", alignItems:"center", gap:10, width:"100%", padding:"10px 12px", borderRadius:10, cursor:"pointer", textAlign:"left",
+                  background: on ? "rgba(251,191,36,0.12)" : "rgba(17,24,39,0.5)",
+                  border: on ? "1px solid rgba(251,191,36,0.4)" : "1px solid rgba(75,85,99,0.4)", color:"inherit" }}>
+                  <span style={{ width:22, height:22, minWidth:22, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center",
+                    background: on ? "linear-gradient(135deg,#fbbf24,#d97706)" : "transparent",
+                    border: on ? "none" : "1px solid rgba(107,114,128,0.6)" }}>
+                    {on && <CheckIcon size={15} color="#1a1205"/>}
+                  </span>
+                  <span style={{ flex:1 }}>
+                    <span style={{ display:"block", fontSize:14, fontWeight:600, color:"#f3f4f6" }}>{label}</span>
+                    <span style={{ display:"block", fontSize:11, color:"#9ca3af" }}>{hint}</span>
+                  </span>
+                </button>
+              );
+              return (
+                <div style={{ marginBottom:16, padding:16, borderRadius:12, background:"linear-gradient(135deg, rgba(217,119,6,0.12), rgba(120,53,15,0.08))", border:"1px solid rgba(251,191,36,0.25)" }}>
+                  <p style={{ fontSize:11, color:"rgba(251,191,36,0.6)", textTransform:"uppercase", letterSpacing:3, marginBottom:6, textAlign:"center" }}>Gesamtschaden bei Treffer</p>
+                  <p style={{ fontSize:36, fontWeight:900, color:"#fde68a", textAlign:"center", marginBottom:12 }}>{s.formula}</p>
+                  <div style={{ display:"flex", gap:8, marginBottom:12 }}>
+                    {[1,2].map(rk=>(
+                      <button key={rk} onClick={()=>setSmiteOptions(p=>({...p,rank:rk}))} style={{ flex:1, padding:"10px 12px", borderRadius:10, cursor:"pointer", fontSize:14, fontWeight:700,
+                        background: smiteOptions.rank===rk ? "linear-gradient(135deg,#fbbf24,#d97706)" : "rgba(17,24,39,0.5)",
+                        border: smiteOptions.rank===rk ? "none" : "1px solid rgba(75,85,99,0.4)",
+                        color: smiteOptions.rank===rk ? "#1a1205" : "#cbd5e1" }}>
+                        Rang {rk}
+                      </button>
+                    ))}
+                  </div>
+                  <div style={{ padding:"8px 12px", borderRadius:8, background:"rgba(0,0,0,0.25)", marginBottom:12 }}>
+                    <Row label="Langschwert (1W8 +1 +CHA)" value={`1W8 + ${s.weaponFlat}`}/>
+                    <Row label={`Göttliche Niederstreckung (Rang ${smiteOptions.rank})`} value={`${s.smiteDice}W8`}/>
+                    <Row label="Präziser Schlag" value="+1W8" dim={!smiteOptions.precise}/>
+                    <Row label="Untot / Unhold" value="+1W8" dim={!smiteOptions.undead}/>
+                  </div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                    <Check on={smiteOptions.precise} onClick={()=>setSmiteOptions(p=>({...p,precise:!p.precise}))}
+                      label="Präziser Schlag" hint="+1W8 Schaden (Ritter von Solamnia)"/>
+                    <Check on={smiteOptions.undead} onClick={()=>setSmiteOptions(p=>({...p,undead:!p.undead}))}
+                      label="Ziel ist Untot / Unhold" hint="+1W8 Strahlungsschaden"/>
+                  </div>
+                </div>
+              );
+            })()}
 
             <p style={{ color:"#d1d5db", lineHeight:1.7, marginBottom:16, fontSize:14 }}>{selectedSpell.fullDesc}</p>
 
