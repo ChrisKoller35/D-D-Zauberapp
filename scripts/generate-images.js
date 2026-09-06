@@ -85,6 +85,11 @@ const SPELLS = [
     filename: 'zone-der-wahrheit.png',
     prompt: 'Dark fantasy D&D spell art, zone of truth spell, a translucent glowing dome of pale blue-white light on the ground, radiant magic circle with sacred truth runes and glyphs glowing inside, shimmering ethereal barrier of honesty magic, celestial enchantment aura, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
   },
+  {
+    id: '16',
+    filename: 'schutz-vor-gut-und-boese.png',
+    prompt: 'Dark fantasy D&D spell art, protection from evil and good spell, a glowing golden-white protective ward of holy light surrounding a lone figure, radiant sacred runes and warding glyphs orbiting in a shielding circle, ethereal barrier repelling shadowy demonic and undead silhouettes, divine abjuration magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
+  },
 ];
 
 async function generateImage(spell) {
