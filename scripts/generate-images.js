@@ -75,6 +75,16 @@ const SPELLS = [
     filename: 'befehl.png',
     prompt: 'Dark fantasy D&D spell art, command spell effect close-up, swirling crimson red sound wave rings expanding through dark air, glowing arcane compulsion runes floating in mid-air, glyphs of domination suspended in shadows, menacing red magical aura, enchantment magic visualization, no text, no card frame, no borders, no letters, pure atmospheric magical effect, painterly digital art, cinematic dramatic lighting, very dark background',
   },
+  {
+    id: '14',
+    filename: 'nebelschritt.png',
+    prompt: 'Dark fantasy D&D spell art, misty step spell, a figure dissolving into swirling silvery-white mist and teleporting, ethereal glowing fog tendrils, luminous silver magical vapor, ghostly translucent form fading through the mist, arcane conjuration magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark moody background',
+  },
+  {
+    id: '15',
+    filename: 'zone-der-wahrheit.png',
+    prompt: 'Dark fantasy D&D spell art, zone of truth spell, a translucent glowing dome of pale blue-white light on the ground, radiant magic circle with sacred truth runes and glyphs glowing inside, shimmering ethereal barrier of honesty magic, celestial enchantment aura, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
+  },
 ];
 
 async function generateImage(spell) {
@@ -88,20 +98,14 @@ async function generateImage(spell) {
 
   console.log(`🎨 Generiere: ${spell.filename}...`);
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${API_KEY}`;
 
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        instances: [{ prompt: spell.prompt }],
-        parameters: {
-          sampleCount: 1,
-          aspectRatio: '4:3',
-          safetyFilterLevel: 'block_only_high',
-          personGeneration: 'allow_adult',
-        },
+        contents: [{ parts: [{ text: spell.prompt }] }],
       }),
     });
 
@@ -112,7 +116,8 @@ async function generateImage(spell) {
     }
 
     const data = await response.json();
-    const base64 = data?.predictions?.[0]?.bytesBase64Encoded;
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const base64 = parts.find(p => p?.inlineData?.data)?.inlineData?.data;
 
     if (!base64) {
       console.error(`❌ Kein Bild in der Antwort für ${spell.filename}:`, JSON.stringify(data));
