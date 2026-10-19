@@ -140,8 +140,12 @@ function evaluateDice(formula, stats) {
 }
 
 /* ── Göttliche Niederstreckung (Smite) – Waffe + Smite + Optionen kombinieren ── */
+// Krit-Hausregel: Die zusätzlichen Krit-Würfel zählen immer als Maximalwert (W8 = 8, W6 = 6).
+// Präziser Schlag wird beim Krit NICHT verdoppelt (so in der Tabelle gerechnet).
+const CRIT_DOUBLES_PRECISE = false;
 function computeSmite(spell, stats, opts) {
   const cha = stats.charismaModifier || 0;
+  const prof = stats.proficiencyBonus || 0;
   const weaponDice = 1;          // Langschwert 1W8
   const weaponFlat = 1 + cha;    // +1 Waffe & +CHA (Hexblade)
   const m = /([0-9]+)\s*[Ww]8/.exec(spell.diceFormula || "");
@@ -149,9 +153,15 @@ function computeSmite(spell, stats, opts) {
   const smiteDice = baseDice + ((opts.rank || 1) - 1);   // +1W8 pro höherem Rang
   const preciseDice = opts.precise ? 1 : 0;   // Präziser Schlag +1W8
   const undeadDice = opts.undead ? 1 : 0;     // Untot/Unhold +1W8
+  const curseFlat = opts.curse ? prof : 0;    // Hexblade-Fluch +Übungsbonus
+  const markD6 = opts.mark ? 1 : 0;           // Mal des Jägers +1W6
   const totalD8 = weaponDice + smiteDice + preciseDice + undeadDice;
-  const formula = `${totalD8}W8${weaponFlat ? ` + ${weaponFlat}` : ""}`;
-  return { formula, weaponDice, weaponFlat, smiteDice, preciseDice, undeadDice, totalD8 };
+  const flat = weaponFlat + curseFlat;
+  const critBonus = 8 * (weaponDice + smiteDice + undeadDice + (CRIT_DOUBLES_PRECISE ? preciseDice : 0)) + 6 * markD6;
+  const dice = `${totalD8}W8${markD6 ? ` + ${markD6}W6` : ""}`;
+  const formula = `${dice} + ${flat}`;
+  const critFormula = `${dice} + ${flat + critBonus}`;
+  return { formula, critFormula, dice, flat, critBonus, weaponDice, weaponFlat, smiteDice, preciseDice, undeadDice, curseFlat, markD6, totalD8 };
 }
 
 /* ── Gem ── */
@@ -293,7 +303,7 @@ export default function SpellManager() {
   const [statsOpen, setStatsOpen] = useState(false);
   const [spells, setSpells] = useState(DEFAULT_SPELLS);
   const [selectedSpell, setSelectedSpell] = useState(null);
-  const [smiteOptions, setSmiteOptions] = useState({ precise:false, undead:false, rank:1 });
+  const [smiteOptions, setSmiteOptions] = useState({ precise:false, undead:false, curse:false, mark:false, crit:false, rank:1 });
   const [editingSpell, setEditingSpell] = useState(null);
   const [showSpellForm, setShowSpellForm] = useState(false);
   const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true,true], level2:[true,true] });
@@ -312,6 +322,8 @@ export default function SpellManager() {
   const [expandedSpecial, setExpandedSpecial] = useState(null);
   const [hp, setHp] = useState(96);
   const [maxHp, setMaxHp] = useState(96);
+  const [hpDelta, setHpDelta] = useState("");
+  const applyHpDelta = sign => { const n = parseInt(hpDelta, 10); if (isNaN(n) || n <= 0) return; setHp(p => Math.max(0, Math.min(maxHp, p + sign * n))); };
 
   const togglePSlot = (lv, i) => setPaladinSlots(p => { const k="level"+lv, a=[...p[k]]; a[i]=!a[i]; return {...p,[k]:a}; });
   const toggleWSlot = i => setWarlockSlots(p => { const a=[...p]; a[i]=!a[i]; return a; });
@@ -428,7 +440,8 @@ export default function SpellManager() {
                   ))}
                 </div>
 
-                {/* ── HP Box ── */}
+                {/* ── HP Box + HP ± Box (gleich hoch) ── */}
+                <div style={{ display:"flex", gap:10, alignItems:"stretch", flexShrink:0 }}>
                 <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:5, padding:"12px 22px", borderRadius:14, background:"rgba(52,211,153,0.07)", border:"1px solid rgba(52,211,153,0.25)", flexShrink:0 }}>
                   <span style={{ fontSize:10, textTransform:"uppercase", letterSpacing:2, color:"rgba(52,211,153,0.8)", fontWeight:700 }}>HP</span>
                   <button onClick={()=>setHp(p=>Math.min(p+1,maxHp))} style={{ width:44, height:36, borderRadius:8, border:"1px solid rgba(52,211,153,0.3)", background:"rgba(52,211,153,0.1)", color:"#6ee7b7", fontSize:18, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>▲</button>
@@ -437,6 +450,17 @@ export default function SpellManager() {
                     <div style={{ fontSize:10, color:"rgba(52,211,153,0.45)", marginTop:2 }}>/ <span style={{ cursor:"pointer", textDecoration:"underline dotted" }} onClick={()=>{ const v=parseInt(window.prompt("Max HP:",maxHp)); if(!isNaN(v)&&v>0){setMaxHp(v);} }}>{maxHp}</span></div>
                   </div>
                   <button onClick={()=>setHp(p=>Math.max(p-1,0))} style={{ width:44, height:36, borderRadius:8, border:"1px solid rgba(52,211,153,0.3)", background:"rgba(52,211,153,0.1)", color:"#6ee7b7", fontSize:18, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>▼</button>
+                </div>
+
+                {/* ── HP ± Box: Zahl eintragen, dann + (heilen) oder − (Schaden) ── */}
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"space-between", gap:5, padding:"12px 22px", borderRadius:14, background:"rgba(52,211,153,0.07)", border:"1px solid rgba(52,211,153,0.25)", flexShrink:0 }}>
+                  <span style={{ fontSize:10, textTransform:"uppercase", letterSpacing:2, color:"rgba(52,211,153,0.8)", fontWeight:700 }}>±</span>
+                  <button onClick={()=>applyHpDelta(1)} title="Heilen" style={{ width:44, height:36, borderRadius:8, border:"1px solid rgba(52,211,153,0.3)", background:"rgba(52,211,153,0.1)", color:"#6ee7b7", fontSize:22, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>+</button>
+                  <input type="number" inputMode="numeric" min="0" value={hpDelta} onChange={e=>setHpDelta(e.target.value)} onFocus={e=>e.target.select()}
+                    onKeyDown={e=>{ if(e.key==="Enter") applyHpDelta(-1); }} placeholder="0"
+                    style={{ width:56, height:46, textAlign:"center", fontSize:22, fontWeight:900, color:"#d1fae5", background:"rgba(0,0,0,0.3)", border:"1px solid rgba(52,211,153,0.3)", borderRadius:8, outline:"none" }}/>
+                  <button onClick={()=>applyHpDelta(-1)} title="Schaden" style={{ width:44, height:36, borderRadius:8, border:"1px solid rgba(248,113,113,0.35)", background:"rgba(248,113,113,0.1)", color:"#fca5a5", fontSize:22, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>−</button>
+                </div>
                 </div>
               </div>
 
@@ -527,7 +551,7 @@ export default function SpellManager() {
               const lc = sp.level===0?"107,114,128":sp.level===1?"251,191,36":"168,85,247";
               const dv = evaluateDice(sp.diceFormula, stats);
               return (
-                <button key={sp.id} onClick={()=>{setSmiteOptions({precise:false,undead:false,rank:1});setSelectedSpell(sp);}} className="chov"
+                <button key={sp.id} onClick={()=>{setSmiteOptions({precise:false,undead:false,curse:false,mark:false,crit:false,rank:1});setSelectedSpell(sp);}} className="chov"
                   style={{ textAlign:"left", borderRadius:16, overflow:"hidden", cursor:"pointer", background:"rgba(15,15,30,0.5)", border:"1px solid rgba(251,191,36,0.08)", padding:0, color:"inherit" }}>
                   <div style={{ height:120, width:"100%", display:"flex", alignItems:"center", justifyContent:"center", position:"relative", overflow:"hidden", background:sp.imageUrl?`url(${sp.imageUrl}) center/cover`:sp.theme||`linear-gradient(135deg, rgba(${lc},0.15), rgba(10,10,18,0.8))` }}>
                     {!sp.imageUrl && !sp.theme && <SparkleIcon size={36} color="rgba(107,114,128,0.3)"/>}
@@ -622,9 +646,12 @@ export default function SpellManager() {
               );
               return (
                 <div style={{ marginBottom:16, padding:16, borderRadius:12, background:"linear-gradient(135deg, rgba(217,119,6,0.12), rgba(120,53,15,0.08))", border:"1px solid rgba(251,191,36,0.25)" }}>
-                  <p style={{ fontSize:11, color:"rgba(251,191,36,0.6)", textTransform:"uppercase", letterSpacing:3, marginBottom:6, textAlign:"center" }}>Gesamtschaden bei Treffer</p>
-                  <p style={{ fontSize:36, fontWeight:900, color:"#fde68a", textAlign:"center", marginBottom:12 }}>{s.formula}</p>
-                  <div style={{ display:"flex", gap:8, marginBottom:12 }}>
+                  <p style={{ fontSize:11, color:"rgba(251,191,36,0.6)", textTransform:"uppercase", letterSpacing:3, marginBottom:6, textAlign:"center" }}>{smiteOptions.crit ? "Gesamtschaden bei Krit" : "Gesamtschaden bei Treffer"}</p>
+                  <p style={{ fontSize:36, fontWeight:900, color: smiteOptions.crit ? "#fca5a5" : "#fde68a", textAlign:"center", marginBottom: smiteOptions.crit ? 4 : 12 }}>{smiteOptions.crit ? s.critFormula : s.formula}</p>
+                  {smiteOptions.crit && (
+                    <p style={{ fontSize:13, color:"#fecaca", textAlign:"center", marginBottom:12 }}>Würfeln: <b>{s.dice}</b> · dann <b>+{s.flat + s.critBonus}</b> dazu (davon +{s.critBonus} Krit-Bonus)</p>
+                  )}
+                  <div style={{ display:"flex", gap:8, marginBottom:8 }}>
                     {[1,2].map(rk=>(
                       <button key={rk} onClick={()=>setSmiteOptions(p=>({...p,rank:rk}))} style={{ flex:1, padding:"10px 12px", borderRadius:10, cursor:"pointer", fontSize:14, fontWeight:700,
                         background: smiteOptions.rank===rk ? "linear-gradient(135deg,#fbbf24,#d97706)" : "rgba(17,24,39,0.5)",
@@ -634,15 +661,32 @@ export default function SpellManager() {
                       </button>
                     ))}
                   </div>
+                  <div style={{ display:"flex", gap:8, marginBottom:12 }}>
+                    {[{v:false,l:"Normal"},{v:true,l:"⚡ Krit"}].map(({v,l})=>(
+                      <button key={l} onClick={()=>setSmiteOptions(p=>({...p,crit:v}))} style={{ flex:1, padding:"10px 12px", borderRadius:10, cursor:"pointer", fontSize:14, fontWeight:700,
+                        background: smiteOptions.crit===v ? (v ? "linear-gradient(135deg,#f87171,#b91c1c)" : "linear-gradient(135deg,#e5e7eb,#9ca3af)") : "rgba(17,24,39,0.5)",
+                        border: smiteOptions.crit===v ? "none" : "1px solid rgba(75,85,99,0.4)",
+                        color: smiteOptions.crit===v ? (v ? "#fff" : "#111827") : "#cbd5e1" }}>
+                        {l}
+                      </button>
+                    ))}
+                  </div>
                   <div style={{ padding:"8px 12px", borderRadius:8, background:"rgba(0,0,0,0.25)", marginBottom:12 }}>
                     <Row label="Langschwert (1W8 +1 +CHA)" value={`1W8 + ${s.weaponFlat}`}/>
                     <Row label={`Göttliche Niederstreckung (Rang ${smiteOptions.rank})`} value={`${s.smiteDice}W8`}/>
                     <Row label="Präziser Schlag" value="+1W8" dim={!smiteOptions.precise}/>
+                    <Row label="Hexblade-Fluch" value={`+${stats.proficiencyBonus||0}`} dim={!smiteOptions.curse}/>
+                    <Row label="Mal des Jägers" value="+1W6" dim={!smiteOptions.mark}/>
                     <Row label="Untot / Unhold" value="+1W8" dim={!smiteOptions.undead}/>
+                    {smiteOptions.crit && <Row label="Krit-Bonus (max. Zusatzwürfel)" value={`+${s.critBonus}`}/>}
                   </div>
                   <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                     <Check on={smiteOptions.precise} onClick={()=>setSmiteOptions(p=>({...p,precise:!p.precise}))}
                       label="Präziser Schlag" hint="+1W8 Schaden (Ritter von Solamnia)"/>
+                    <Check on={smiteOptions.curse} onClick={()=>setSmiteOptions(p=>({...p,curse:!p.curse}))}
+                      label="Hexblade-Fluch" hint={`+${stats.proficiencyBonus||0} Schaden (Übungsbonus), Krit auf 19–20`}/>
+                    <Check on={smiteOptions.mark} onClick={()=>setSmiteOptions(p=>({...p,mark:!p.mark}))}
+                      label="Mal des Jägers" hint="+1W6 Schaden pro Waffentreffer"/>
                     <Check on={smiteOptions.undead} onClick={()=>setSmiteOptions(p=>({...p,undead:!p.undead}))}
                       label="Ziel ist Untot / Unhold" hint="+1W8 Strahlungsschaden"/>
                   </div>
