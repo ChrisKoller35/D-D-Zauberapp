@@ -145,7 +145,7 @@ const PRESETS = {
     paladinSlots:{ level1:4, level2:2 },
     warlockSlots:1,
     spellIds:["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
-    smite:{ stat:"cha", curse:true, mark:true },
+    smite:{ stat:"cha", curse:true, mark:true, critPrecise:false },
     specials:[
       { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
       { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen (30 ft, sichtbar, 1 Min). Gegen das Ziel: +3 Schaden (Übungsbonus), Crits auf 19–20. Stirbt das Ziel: 5 HP zurück (Hexer-Stufe 1 + CHA-Mod +4).", maxSlots:1, slots:[true], restType:"short", color:"red" },
@@ -166,7 +166,7 @@ const PRESETS = {
     // Paladin: Erzwungenes Duell, Wunden heilen, Schild des Glaubens, Hilfe, Gebet der Heilung, Schützendes Band
     // Stets vorbereitet: Göttliche Niederstreckung, Streitross beschwören
     spellIds:["1","2","16","4","17","7","6","8","12","18","19","13"],
-    smite:{ stat:"str", curse:false, mark:false },
+    smite:{ stat:"str", curse:false, mark:false, critPrecise:true },
     specials:[
       { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
       { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5 (Stufe 7 = 35). Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:35, poolCurrent:35, slots:[], restType:"long", color:"green" },
@@ -195,8 +195,7 @@ function evaluateDice(formula, stats) {
 
 /* ── Göttliche Niederstreckung (Smite) – Waffe + Smite + Optionen kombinieren ── */
 // Krit-Hausregel: Die zusätzlichen Krit-Würfel zählen immer als Maximalwert (W8 = 8, W6 = 6).
-// Präziser Schlag wird beim Krit NICHT verdoppelt (so in der Tabelle gerechnet).
-const CRIT_DOUBLES_PRECISE = false;
+// Präziser Schlag beim Krit: je Preset (smite.critPrecise) – Paladin 5 = nicht verdoppelt (Hausregel), Paladin 7 = verdoppelt (Regelwerk).
 function computeSmite(spell, stats, opts, cfg = { stat:"cha", curse:true, mark:true }) {
   const cha = stats.charismaModifier || 0;
   const strMod = Math.floor(((stats.str || 10) - 10) / 2);
@@ -215,7 +214,7 @@ function computeSmite(spell, stats, opts, cfg = { stat:"cha", curse:true, mark:t
   const markD6 = opts.mark ? 1 : 0;           // Mal des Jägers +1W6
   const totalD8 = weaponDice + smiteDice + preciseDice + undeadDice;
   const flat = weaponFlat + curseFlat;
-  const critBonus = 8 * (weaponDice + smiteDice + undeadDice + (CRIT_DOUBLES_PRECISE ? preciseDice : 0)) + 6 * markD6;
+  const critBonus = 8 * (weaponDice + smiteDice + undeadDice + (cfg.critPrecise ? preciseDice : 0)) + 6 * markD6;
   const dice = `${totalD8}W8${markD6 ? ` + ${markD6}W6` : ""}`;
   const formula = `${dice} + ${flat}`;
   const critFormula = `${dice} + ${flat + critBonus}`;
