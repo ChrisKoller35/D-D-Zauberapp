@@ -125,7 +125,61 @@ const DEFAULT_SPELLS = [
   { id:"14", name:"Nebelschritt", school:"Beschwörung", level:2, shortDesc:"Bonusaktion: Teleportiere dich bis zu 9 m in silbernem Nebel.", fullDesc:"In silbrig schimmernden Nebel gehüllt teleportierst du dich als Bonusaktion bis zu 9 m weit auf ein freies Feld, das du sehen kannst. Du erscheinst am Zielort erneut aus dem Nebel. Ideal zum Entkommen aus Umklammerungen, gefährlichem Gelände oder zum Überwinden von Hindernissen.", range:"Selbst", duration:"Unmittelbar", components:"V", concentration:false, diceFormula:"", diceNote:"Teleport bis 9 m (Bonusaktion)", imageUrl:"/images/spells/nebelschritt.png", theme:"radial-gradient(ellipse at 40% 50%, rgba(148,163,184,0.35) 0%, transparent 55%), radial-gradient(circle at 65% 45%, rgba(203,213,225,0.2) 0%, transparent 45%), radial-gradient(circle at 50% 70%, rgba(226,232,240,0.12) 0%, transparent 40%), linear-gradient(160deg, #10151f 0%, #161b26 50%, #0d1017 100%)" },
   { id:"15", name:"Zone der Wahrheit", school:"Verzauberung", level:2, shortDesc:"Sphäre (4,5 m), in der niemand bewusst lügen kann.", fullDesc:"Du erschaffst eine Sphäre der Wahrheit mit 4,5 m Radius, zentriert auf einen Punkt in Reichweite. Jede Kreatur, die die Sphäre beim Wirken oder beim Betreten zum ersten Mal betritt, muss einen CHA-Rettungswurf bestehen. Bei Misslingen kann die Kreatur keine bewusste Lüge äußern, solange sie in der Sphäre ist. Du weißt, ob ein Ziel den Rettungswurf besteht. Eine betroffene Kreatur ist sich des Effekts bewusst und kann daher ausweichende Antworten geben, muss aber wahrheitsgemäß bleiben.", range:"18 m", duration:"10 Minuten", components:"V, S", concentration:false, diceFormula:"", diceNote:"CHA-Rettungswurf gegen SC", imageUrl:"/images/spells/zone-der-wahrheit.png", theme:"radial-gradient(ellipse at 50% 55%, rgba(96,165,250,0.28) 0%, transparent 55%), radial-gradient(circle at 40% 40%, rgba(147,197,253,0.16) 0%, transparent 45%), radial-gradient(circle at 60% 65%, rgba(191,219,254,0.1) 0%, transparent 40%), linear-gradient(170deg, #0a1220 0%, #0d1830 50%, #08111f 100%)" },
   { id:"16", name:"Schutz vor Gut und Böse", school:"Bannmagie", level:1, shortDesc:"Schützt eine berührte Kreatur vor bestimmten Kreaturentypen.", fullDesc:"Bis der Zauber endet, ist eine willige Kreatur, die du berührst, vor bestimmten Kreaturentypen geschützt: Aberrationen, Himmlische, Elementare, Feenwesen, Unholde und Untote. Der Schutz gewährt mehrere Vorteile: Kreaturen dieser Typen haben Nachteil auf Angriffswürfe gegen das Ziel. Das Ziel kann von ihnen nicht bezaubert, verängstigt oder besessen werden. Ist das Ziel bereits bezaubert, verängstigt oder besessen, hat es Vorteil auf jeden neuen Rettungswurf gegen den entsprechenden Effekt.", range:"Berührung", duration:"Konzentration, bis zu 10 Minuten", components:"V, S, M (etwas heiliges Wasser oder Silber- und Eisenpulver)", concentration:true, diceFormula:"", diceNote:"Nachteil für Angreifer bestimmter Typen", imageUrl:"/images/spells/schutz-vor-gut-und-boese.png", theme:"radial-gradient(ellipse at 50% 45%, rgba(250,204,21,0.28) 0%, transparent 55%), radial-gradient(circle at 35% 60%, rgba(226,232,240,0.16) 0%, transparent 45%), radial-gradient(circle at 65% 55%, rgba(253,224,71,0.12) 0%, transparent 40%), linear-gradient(160deg, #14130a 0%, #1a1810 50%, #0f0e08 100%)" },
+  /* ── Neue Zauber ab Paladin 7 (Preset „Paladin 7 / Hexer 1") ── */
+  { id:"17", name:"Erzwungenes Duell", school:"Verzauberung", level:1, shortDesc:"Bonusaktion: Zwinge einen Gegner, sich auf dich zu konzentrieren.", fullDesc:"Bonusaktion. Du forderst eine Kreatur, die du in Reichweite sehen kannst, zum Duell. Das Ziel muss einen WIS-Rettungswurf bestehen. Bei Misslingen hat es für die Dauer Nachteil auf Angriffswürfe gegen andere Kreaturen als dich und kann sich nicht freiwillig auf ein Feld bewegen, das mehr als 9 m von dir entfernt ist. Der Zauber endet, wenn du eine andere Kreatur angreifst, einen Zauber auf einen anderen Feind wirkst, ein Verbündeter dem Ziel Schaden zufügt oder einen schädlichen Zauber darauf wirkt, oder wenn du deinen Zug mehr als 9 m vom Ziel entfernt beendest.", range:"9 m", duration:"Konzentration, bis zu 1 Minute", components:"V", concentration:true, diceFormula:"", diceNote:"WIS-Rettungswurf gegen SC (Bonusaktion)", imageUrl:"/images/spells/erzwungenes-duell.png", theme:"radial-gradient(ellipse at 50% 55%, rgba(244,63,94,0.3) 0%, transparent 55%), radial-gradient(circle at 30% 40%, rgba(251,191,36,0.18) 0%, transparent 45%), radial-gradient(circle at 70% 60%, rgba(190,24,93,0.14) 0%, transparent 40%), linear-gradient(160deg, #1a0810 0%, #140a0f 50%, #1a0c08 100%)" },
+  { id:"18", name:"Gebet der Heilung", school:"Bannmagie", level:2, shortDesc:"10 Min. Gebet: bis zu 5 Kreaturen heilen 2W8 + CHA und erhalten eine kurze Rast.", fullDesc:"Wirkzeit 10 Minuten. Bis zu fünf Kreaturen deiner Wahl, die in Reichweite bleiben, erhalten jeweils Trefferpunkte in Höhe von 2W8 + deinem Zauberwirken-Attributsmodifikator (CHA) zurück. Zusätzlich erhalten sie alle Vorteile einer kurzen Rast. Eine Kreatur kann nicht erneut von diesem Zauber profitieren, bis sie eine lange Rast beendet hat. Auf höheren Stufen: +1W8 Heilung pro Zauberplatz-Stufe über der 2.", range:"9 m", duration:"Unmittelbar", components:"V", concentration:false, diceFormula:"2W8 + CHA", diceNote:"Heilung je Ziel (bis zu 5) + kurze Rast", imageUrl:"/images/spells/gebet-der-heilung.png", theme:"radial-gradient(ellipse at 50% 40%, rgba(253,224,71,0.28) 0%, transparent 55%), radial-gradient(circle at 35% 65%, rgba(52,211,153,0.18) 0%, transparent 45%), radial-gradient(circle at 70% 55%, rgba(167,243,208,0.1) 0%, transparent 40%), linear-gradient(165deg, #0f1508 0%, #0d140f 50%, #141208 100%)" },
+  { id:"19", name:"Schützendes Band", school:"Bannmagie", level:2, shortDesc:"Verbündeter erhält +1 RK, +1 Rettungswürfe und Resistenz – du teilst den Schaden.", fullDesc:"Du berührst eine willige Kreatur und schaffst eine mystische Verbindung. Solange das Ziel sich innerhalb von 18 m von dir befindet, erhält es +1 auf die Rüstungsklasse und auf Rettungswürfe sowie Resistenz gegen jeglichen Schaden. Jedes Mal, wenn es Schaden erleidet, erleidest du denselben Betrag. Der Zauber endet, wenn du auf 0 TP fällst oder wenn du und das Ziel mehr als 18 m voneinander entfernt seid. Er endet auch, wenn er erneut auf eine der beiden verbundenen Kreaturen gewirkt wird. Du kannst den Zauber als Aktion beenden. Material: zwei Platinringe (je 50 GM), die ihr beide für die Dauer tragt.", range:"Berührung", duration:"1 Stunde", components:"V, S, M (2 Platinringe à 50 GM)", concentration:false, diceFormula:"", diceNote:"+1 RK, +1 Rettung, Resistenz – du nimmst gleichen Schaden", imageUrl:"/images/spells/schuetzendes-band.png", theme:"radial-gradient(ellipse at 50% 50%, rgba(148,163,184,0.3) 0%, transparent 55%), radial-gradient(circle at 30% 45%, rgba(96,165,250,0.2) 0%, transparent 45%), radial-gradient(circle at 70% 55%, rgba(226,232,240,0.12) 0%, transparent 40%), linear-gradient(160deg, #0d1220 0%, #121826 50%, #0a0f1a 100%)" },
 ];
+
+/* ══════════════════ PRESETS ══════════════════
+ * Zwei Charakter-Stände zum Umschalten während der Session (Level-up).
+ * spellIds   → welche Zauber aus DEFAULT_SPELLS angezeigt werden
+ * specials   → Fähigkeiten/Spezialzauber-Zeilen
+ * smite      → stat: Attribut für den Waffenschaden im Smite-Rechner,
+ *              curse/mark: ob Hexblade-Fluch und Mal des Jägers als Option erscheinen
+ */
+const PRESETS = {
+  p5: {
+    id:"p5", label:"Paladin 5 / Hexer 1", subtitle:"Hexer 1 · Paladin 5 — Zauber-Manager",
+    maxHp:96,
+    paladinSlots:{ level1:4, level2:2 },
+    warlockSlots:1,
+    spellIds:["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
+    smite:{ stat:"cha", curse:true, mark:true },
+    specials:[
+      { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
+      { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen (30 ft, sichtbar, 1 Min). Gegen das Ziel: +3 Schaden (Übungsbonus), Crits auf 19–20. Stirbt das Ziel: 5 HP zurück (Hexer-Stufe 1 + CHA-Mod +4).", maxSlots:1, slots:[true], restType:"short", color:"red" },
+      { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5. Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:30, poolCurrent:30, slots:[], restType:"long", color:"green" },
+      { id:"s4", name:"Göttlicher Kanal", subtitle:"Schwur d. Vergeltung", desc:"Schwur der Feindschaft: Bonusaktion, Vorteil auf Angriffe gegen 1 Ziel (1 Min). — Feind bannen: Aktion, 1 Ziel verängstigt & Bewegung 0 (WIS-Rettung).", maxSlots:2, slots:[true,true], restType:"short", color:"amber" },
+      { id:"s5", name:"Streitross beschw. (frei)", subtitle:"Paladin Lvl 5 — Treuer Streitross", desc:"Du hast den Zauber 'Streitross beschwören' stets vorbereitet. Du kannst ihn 1× pro langer Rast wirken, OHNE einen Zauberplatz zu verbrauchen. Weitere Wirkungen kosten einen 2.-Grad-Zauberplatz.", maxSlots:1, slots:[true], restType:"long", color:"green" },
+      { id:"m1", name:"Sap — Langschwert", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Langschwert, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
+      { id:"m2", name:"Sap — Speer", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Speer, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
+    ],
+  },
+  p7: {
+    id:"p7", label:"Paladin 7 / Hexer 1", subtitle:"Hexer 1 · Paladin 7 — Zauber-Manager",
+    maxHp:110,
+    // Paladin 7 = Zauberwirker-Stufe 4 (halbe Paladin-Stufen, aufgerundet – PHB 2024) → 4× Grad 1, 3× Grad 2
+    paladinSlots:{ level1:4, level2:3 },
+    warlockSlots:1,
+    // Hexer: Schauriger Strahl, Magierhand, Schutz vor Gut und Böse, Schild
+    // Paladin: Erzwungenes Duell, Wunden heilen, Schild des Glaubens, Hilfe, Gebet der Heilung, Schützendes Band
+    // Stets vorbereitet: Göttliche Niederstreckung, Streitross beschwören
+    spellIds:["1","2","16","4","17","7","6","8","12","18","19","13"],
+    smite:{ stat:"str", curse:false, mark:false },
+    specials:[
+      { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
+      { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5 (Stufe 7 = 35). Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:35, poolCurrent:35, slots:[], restType:"long", color:"green" },
+      { id:"s5", name:"Streitross beschw. (frei)", subtitle:"Paladin Lvl 5 — Treuer Streitross", desc:"Du hast den Zauber 'Streitross beschwören' stets vorbereitet. Du kannst ihn 1× pro langer Rast wirken, OHNE einen Zauberplatz zu verbrauchen. Weitere Wirkungen kosten einen 2.-Grad-Zauberplatz.", maxSlots:1, slots:[true], restType:"long", color:"green" },
+      { id:"s6", name:"Niederstreckung (frei)", subtitle:"Paladin Lvl 7", desc:"1× pro langer Rast kannst du 'Göttliche Niederstreckung' wirken, OHNE einen Zauberplatz zu verbrauchen (zählt wie ein Platz des 1. Grades: 2W8 Strahlungsschaden, +1W8 gegen Untote/Unholde). Weitere Niederstreckungen kosten wie gewohnt einen Zauberplatz.", maxSlots:1, slots:[true], restType:"long", color:"amber" },
+      { id:"m1", name:"Sap — Langschwert", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Langschwert, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
+      { id:"m2", name:"Sap — Speer", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Speer, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
+    ],
+  },
+};
+const presetSpells = preset => preset.spellIds.map(id => DEFAULT_SPELLS.find(s => s.id === id)).filter(Boolean);
+const presetPaladinSlots = preset => ({ level1:Array(preset.paladinSlots.level1).fill(true), level2:Array(preset.paladinSlots.level2).fill(true) });
+const cloneSpecials = preset => preset.specials.map(s => ({ ...s, slots:[...s.slots] }));
 
 function evaluateDice(formula, stats) {
   if (!formula || formula === "") return null;
@@ -143,11 +197,15 @@ function evaluateDice(formula, stats) {
 // Krit-Hausregel: Die zusätzlichen Krit-Würfel zählen immer als Maximalwert (W8 = 8, W6 = 6).
 // Präziser Schlag wird beim Krit NICHT verdoppelt (so in der Tabelle gerechnet).
 const CRIT_DOUBLES_PRECISE = false;
-function computeSmite(spell, stats, opts) {
+function computeSmite(spell, stats, opts, cfg = { stat:"cha", curse:true, mark:true }) {
   const cha = stats.charismaModifier || 0;
+  const strMod = Math.floor(((stats.str || 10) - 10) / 2);
   const prof = stats.proficiencyBonus || 0;
   const weaponDice = 1;          // Langschwert 1W8
-  const weaponFlat = 1 + cha;    // +1 Waffe & +CHA (Hexblade)
+  const weaponStat = cfg.stat === "str" ? strMod : cha;   // Preset: CHA (Hexblade) oder STR
+  const weaponFlat = 1 + weaponStat;    // +1 Waffe & +Attribut
+  if (!cfg.curse) opts = { ...opts, curse:false };        // Option im Preset nicht verfügbar
+  if (!cfg.mark) opts = { ...opts, mark:false };
   const m = /([0-9]+)\s*[Ww]8/.exec(spell.diceFormula || "");
   const baseDice = m ? parseInt(m[1]) : 0;
   const smiteDice = baseDice + ((opts.rank || 1) - 1);   // +1W8 pro höherem Rang
@@ -161,7 +219,7 @@ function computeSmite(spell, stats, opts) {
   const dice = `${totalD8}W8${markD6 ? ` + ${markD6}W6` : ""}`;
   const formula = `${dice} + ${flat}`;
   const critFormula = `${dice} + ${flat + critBonus}`;
-  return { formula, critFormula, dice, flat, critBonus, weaponDice, weaponFlat, smiteDice, preciseDice, undeadDice, curseFlat, markD6, totalD8 };
+  return { formula, critFormula, dice, flat, critBonus, weaponDice, weaponFlat, weaponStat, weaponStatLabel: cfg.stat === "str" ? "STR" : "CHA", smiteDice, preciseDice, undeadDice, curseFlat, markD6, totalD8 };
 }
 
 /* ── Gem ── */
@@ -299,31 +357,49 @@ function SpecialEditModal({ special, onSave, onClose }) {
 
 /* ══════════════════ MAIN APP ══════════════════ */
 export default function SpellManager() {
-  const [stats, setStats] = useState({ str:16, dex:10, con:14, int:8, wis:12, cha:18, proficiencyBonus:3, spellAttackBonus:7, spellSaveDC:15, charismaModifier:4 });
+  const [stats, setStats] = useState({ str:14, dex:10, con:14, int:8, wis:12, cha:18, proficiencyBonus:3, spellAttackBonus:7, spellSaveDC:15, charismaModifier:4 });
   const [statsOpen, setStatsOpen] = useState(false);
-  const [spells, setSpells] = useState(DEFAULT_SPELLS);
+  const [presetId, setPresetId] = useState("p5");
+  const preset = PRESETS[presetId];
+  const [spells, setSpells] = useState(() => presetSpells(PRESETS.p5));
   const [selectedSpell, setSelectedSpell] = useState(null);
   const [smiteOptions, setSmiteOptions] = useState({ precise:false, undead:false, curse:false, mark:false, crit:false, rank:1 });
   const [editingSpell, setEditingSpell] = useState(null);
   const [showSpellForm, setShowSpellForm] = useState(false);
-  const [paladinSlots, setPaladinSlots] = useState({ level1:[true,true,true,true], level2:[true,true] });
-  const [warlockSlots, setWarlockSlots] = useState([true]);
-  const [specials, setSpecials] = useState([
-    { id:"s1", name:"Präziser Schlag", subtitle:"Ritter von Solamnia", desc:"Wenn du einen Angriff triffst, kannst du zusätzlich 1W8 Schaden verursachen. Du hast außerdem Vorteil auf Angriffswürfe. Trifft der Angriff nicht, wird keine Aufladung verbraucht (Bonus geht zurück).", maxSlots:2, slots:[true,true], restType:"long", color:"cyan" },
-    { id:"s2", name:"Hexblade's Curse", subtitle:"Hexer", desc:"Bonusaktion: Ziel verfluchen (30 ft, sichtbar, 1 Min). Gegen das Ziel: +3 Schaden (Übungsbonus), Crits auf 19–20. Stirbt das Ziel: 5 HP zurück (Hexer-Stufe 1 + CHA-Mod +4).", maxSlots:1, slots:[true], restType:"short", color:"red" },
-    { id:"s3", name:"Handauflegen", subtitle:"Paladin", desc:"Aktion · Berührung. HP-Pool = Paladin-Stufe × 5. Beliebige Menge HP heilen, oder 5 Punkte für Krankheit/Gift neutralisieren.", pool:true, maxSlots:30, poolCurrent:30, slots:[], restType:"long", color:"green" },
-    { id:"s4", name:"Göttlicher Kanal", subtitle:"Schwur d. Vergeltung", desc:"Schwur der Feindschaft: Bonusaktion, Vorteil auf Angriffe gegen 1 Ziel (1 Min). — Feind bannen: Aktion, 1 Ziel verängstigt & Bewegung 0 (WIS-Rettung).", maxSlots:2, slots:[true,true], restType:"short", color:"amber" },
-    { id:"s5", name:"Streitross beschw. (frei)", subtitle:"Paladin Lvl 5 — Treuer Streitross", desc:"Du hast den Zauber 'Streitross beschwören' stets vorbereitet. Du kannst ihn 1× pro langer Rast wirken, OHNE einen Zauberplatz zu verbrauchen. Weitere Wirkungen kosten einen 2.-Grad-Zauberplatz.", maxSlots:1, slots:[true], restType:"long", color:"green" },
-    { id:"m1", name:"Sap — Langschwert", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Langschwert, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
-    { id:"m2", name:"Sap — Speer", subtitle:"Waffenmeisterschaft", desc:"Triffst du eine Kreatur mit dem Speer, hat sie Nachteil auf ihren nächsten Angriffswurf bis zum Beginn deines nächsten Zugs. (Treffer reicht — kein Schaden nötig.)", infoOnly:true, maxSlots:0, slots:[], restType:"long", color:"cyan" },
-  ]);
+  const [paladinSlots, setPaladinSlots] = useState(() => presetPaladinSlots(PRESETS.p5));
+  const [warlockSlots, setWarlockSlots] = useState(() => Array(PRESETS.p5.warlockSlots).fill(true));
+  const [specials, setSpecials] = useState(() => cloneSpecials(PRESETS.p5));
   const [editingSpecial, setEditingSpecial] = useState(null);
   const [filterLevel, setFilterLevel] = useState("all");
   const [expandedSpecial, setExpandedSpecial] = useState(null);
-  const [hp, setHp] = useState(96);
-  const [maxHp, setMaxHp] = useState(96);
+  const [hp, setHp] = useState(PRESETS.p5.maxHp);
+  const [maxHp, setMaxHp] = useState(PRESETS.p5.maxHp);
   const [hpDelta, setHpDelta] = useState("");
   const applyHpDelta = sign => { const n = parseInt(hpDelta, 10); if (isNaN(n) || n <= 0) return; setHp(p => Math.max(0, Math.min(maxHp, p + sign * n))); };
+
+  /* Preset wechseln (z. B. Level-up mitten in der Session):
+   * – verbrauchte Zauberplätze/Fähigkeiten bleiben verbraucht, neue Plätze kommen voll dazu
+   * – HP steigen um die Differenz der Max-HP (bzw. werden beim Zurückschalten gekappt)
+   * – Handauflegen-Pool wächst um die Differenz
+   * – selbst bearbeitete Zauber bleiben erhalten, nicht mehr vorhandene verschwinden */
+  const switchPreset = id => {
+    if (id === presetId || !PRESETS[id]) return;
+    const next = PRESETS[id];
+    const merge = (oldArr, n) => Array.from({ length:n }, (_, i) => oldArr[i] ?? true);
+    setPaladinSlots(p => ({ level1:merge(p.level1, next.paladinSlots.level1), level2:merge(p.level2, next.paladinSlots.level2) }));
+    setWarlockSlots(p => merge(p, next.warlockSlots));
+    setSpecials(old => cloneSpecials(next).map(s => {
+      const o = old.find(x => x.id === s.id);
+      if (!o) return s;
+      return { ...s, slots:merge(o.slots, s.maxSlots), poolCurrent:s.pool ? Math.max(0, Math.min(s.maxSlots, (o.poolCurrent ?? o.maxSlots) + (s.maxSlots - o.maxSlots))) : s.poolCurrent };
+    }));
+    setSpells(old => next.spellIds.map(sid => old.find(s => s.id === sid) || DEFAULT_SPELLS.find(s => s.id === sid)).filter(Boolean));
+    const diff = next.maxHp - maxHp;
+    setMaxHp(next.maxHp);
+    setHp(p => Math.max(0, Math.min(next.maxHp, p + Math.max(0, diff))));
+    setSelectedSpell(null); setExpandedSpecial(null); setFilterLevel("all");
+    setPresetId(id);
+  };
 
   const togglePSlot = (lv, i) => setPaladinSlots(p => { const k="level"+lv, a=[...p[k]]; a[i]=!a[i]; return {...p,[k]:a}; });
   const toggleWSlot = i => setWarlockSlots(p => { const a=[...p]; a[i]=!a[i]; return a; });
@@ -331,7 +407,7 @@ export default function SpellManager() {
   const setPoolValue = (sid,v) => setSpecials(p => p.map(s => s.id!==sid?s:{...s,poolCurrent:Math.max(0,Math.min(s.maxSlots,v))}));
 
   const shortRest = () => { setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>s.restType==="short"?{...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}:s)); };
-  const longRest = () => { setPaladinSlots({level1:[true,true,true,true],level2:[true,true]}); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}))); };
+  const longRest = () => { setPaladinSlots(presetPaladinSlots(preset)); setWarlockSlots(p=>p.map(()=>true)); setSpecials(p=>p.map(s=>({...s,slots:s.slots.map(()=>true),poolCurrent:s.pool?s.maxSlots:s.poolCurrent}))); };
 
   const saveSpell = sp => {
     if (sp.id && spells.find(s=>s.id===sp.id)) setSpells(p=>p.map(s=>s.id===sp.id?sp:s));
@@ -370,7 +446,17 @@ export default function SpellManager() {
             <h1 style={{ fontSize:30, fontWeight:800, letterSpacing:4, background:"linear-gradient(135deg,#fbbf24,#f59e0b 40%,#d97706)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>GRIMOIRE</h1>
             <SparkleIcon size={26} color="#fbbf24"/>
           </div>
-          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>Hexer 1 · Paladin 5 — Zauber-Manager</p>
+          <p style={{ color:"#6b7280", fontSize:13, letterSpacing:3, textTransform:"uppercase" }}>{preset.subtitle}</p>
+          {/* ── Preset-Umschalter (Level-up während der Session) ── */}
+          <div style={{ display:"inline-flex", gap:4, marginTop:12, padding:4, borderRadius:12, background:"rgba(15,15,30,0.7)", border:"1px solid rgba(251,191,36,0.15)" }}>
+            {Object.values(PRESETS).map(p=>(
+              <button key={p.id} onClick={()=>switchPreset(p.id)} style={{ padding:"8px 16px", borderRadius:9, fontSize:13, fontWeight:700, cursor:"pointer", letterSpacing:0.5, transition:"all .2s",
+                background: presetId===p.id ? "linear-gradient(135deg,#fbbf24,#d97706)" : "transparent",
+                border: "none", color: presetId===p.id ? "#1a1205" : "#9ca3af" }}>
+                {p.label}
+              </button>
+            ))}
+          </div>
         </header>
 
         {/* ═══ STATS ═══ */}
@@ -622,7 +708,7 @@ export default function SpellManager() {
             );})()}
 
             {selectedSpell.name && selectedSpell.name.includes("Niederstreck") && (()=>{
-              const s = computeSmite(selectedSpell, stats, smiteOptions);
+              const s = computeSmite(selectedSpell, stats, smiteOptions, preset.smite);
               const Row = ({label, value, dim}) => (
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"4px 0", opacity: dim?0.5:1 }}>
                   <span style={{ fontSize:13, color:"#cbd5e1" }}>{label}</span>
@@ -672,21 +758,26 @@ export default function SpellManager() {
                     ))}
                   </div>
                   <div style={{ padding:"8px 12px", borderRadius:8, background:"rgba(0,0,0,0.25)", marginBottom:12 }}>
-                    <Row label="Langschwert (1W8 +1 +CHA)" value={`1W8 + ${s.weaponFlat}`}/>
+                    <Row label={`Langschwert (1W8 +1 +${s.weaponStatLabel})`} value={`1W8 + ${s.weaponFlat}`}/>
                     <Row label={`Göttliche Niederstreckung (Rang ${smiteOptions.rank})`} value={`${s.smiteDice}W8`}/>
                     <Row label="Präziser Schlag" value="+1W8" dim={!smiteOptions.precise}/>
-                    <Row label="Hexblade-Fluch" value={`+${stats.proficiencyBonus||0}`} dim={!smiteOptions.curse}/>
-                    <Row label="Mal des Jägers" value="+1W6" dim={!smiteOptions.mark}/>
+                    {preset.smite.curse && <Row label="Hexblade-Fluch" value={`+${stats.proficiencyBonus||0}`} dim={!smiteOptions.curse}/>}
+                    {preset.smite.mark && <Row label="Mal des Jägers" value="+1W6" dim={!smiteOptions.mark}/>}
                     <Row label="Untot / Unhold" value="+1W8" dim={!smiteOptions.undead}/>
                     {smiteOptions.crit && <Row label="Krit-Bonus (max. Zusatzwürfel)" value={`+${s.critBonus}`}/>}
+                    <div style={{ height:1, background:"rgba(251,191,36,0.25)", margin:"6px 0" }}/>
+                    <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"4px 0" }}>
+                      <span style={{ fontSize:14, fontWeight:700, color:"#fde68a" }}>Gesamt würfeln</span>
+                      <span style={{ fontSize:18, fontWeight:900, color: smiteOptions.crit ? "#fca5a5" : "#fde68a" }}>{smiteOptions.crit ? s.critFormula : s.formula}</span>
+                    </div>
                   </div>
                   <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                     <Check on={smiteOptions.precise} onClick={()=>setSmiteOptions(p=>({...p,precise:!p.precise}))}
                       label="Präziser Schlag" hint="+1W8 Schaden (Ritter von Solamnia)"/>
-                    <Check on={smiteOptions.curse} onClick={()=>setSmiteOptions(p=>({...p,curse:!p.curse}))}
-                      label="Hexblade-Fluch" hint={`+${stats.proficiencyBonus||0} Schaden (Übungsbonus), Krit auf 19–20`}/>
-                    <Check on={smiteOptions.mark} onClick={()=>setSmiteOptions(p=>({...p,mark:!p.mark}))}
-                      label="Mal des Jägers" hint="+1W6 Schaden pro Waffentreffer"/>
+                    {preset.smite.curse && <Check on={smiteOptions.curse} onClick={()=>setSmiteOptions(p=>({...p,curse:!p.curse}))}
+                      label="Hexblade-Fluch" hint={`+${stats.proficiencyBonus||0} Schaden (Übungsbonus), Krit auf 19–20`}/>}
+                    {preset.smite.mark && <Check on={smiteOptions.mark} onClick={()=>setSmiteOptions(p=>({...p,mark:!p.mark}))}
+                      label="Mal des Jägers" hint="+1W6 Schaden pro Waffentreffer"/>}
                     <Check on={smiteOptions.undead} onClick={()=>setSmiteOptions(p=>({...p,undead:!p.undead}))}
                       label="Ziel ist Untot / Unhold" hint="+1W8 Strahlungsschaden"/>
                   </div>

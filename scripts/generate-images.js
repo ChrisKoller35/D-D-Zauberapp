@@ -90,6 +90,21 @@ const SPELLS = [
     filename: 'schutz-vor-gut-und-boese.png',
     prompt: 'Dark fantasy D&D spell art, protection from evil and good spell, a glowing golden-white protective ward of holy light surrounding a lone figure, radiant sacred runes and warding glyphs orbiting in a shielding circle, ethereal barrier repelling shadowy demonic and undead silhouettes, divine abjuration magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
   },
+  {
+    id: '17',
+    filename: 'erzwungenes-duell.png',
+    prompt: 'Dark fantasy D&D spell art, compelled duel spell, a paladin in armor pointing a glowing sword at a single monstrous enemy, a crimson-gold magical chain of light binding the two combatants together in a duel, arena of swirling enchantment energy isolating them from the shadows around, honor-bound challenge magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
+  },
+  {
+    id: '18',
+    filename: 'gebet-der-heilung.png',
+    prompt: 'Dark fantasy D&D spell art, prayer of healing spell, a kneeling paladin praying while soft warm golden-green healing light rains down on a small group of resting wounded companions, gentle divine radiance closing wounds, floating luminous motes of restorative energy, sacred campfire rest atmosphere, abjuration healing magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
+  },
+  {
+    id: '19',
+    filename: 'schuetzendes-band.png',
+    prompt: 'Dark fantasy D&D spell art, warding bond spell, two glowing platinum rings connected by a luminous silver-blue thread of protective magic between a paladin and an ally, a shimmering shared shield aura enveloping both figures, damage flowing through the bond as streaks of light, divine abjuration magic, no text, no card frame, no borders, no letters, atmospheric magical effect, painterly digital art, cinematic dramatic lighting, dark background',
+  },
 ];
 
 async function generateImage(spell) {
